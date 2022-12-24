@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import { useEffect } from 'react';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const synth = window.speechSynthesis;
+
+  useEffect(() => {
+    synth.addEventListener('voiceschanged', () => {
+      const voices = synth.getVoices();
+      console.log({ voices });
+      for (let i = 0; i < voices.length; i++) {
+        const option = document.createElement('option');
+        option.textContent = `${voices[i].name} (${voices[i].lang})`;
+        option.setAttribute('data-lang', voices[i].lang);
+        option.setAttribute('data-name', voices[i].name);
+        // voiceSelect.appendChild(option);
+      }
+    });
+  }, [synth]);
+
+  return <div>123</div>;
 }
 
 export default App;
